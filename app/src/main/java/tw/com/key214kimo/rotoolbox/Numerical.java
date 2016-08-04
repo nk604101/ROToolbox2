@@ -299,7 +299,7 @@ public class Numerical extends AppCompatActivity {
         }
 
     }
-
+       
 
     public void click2(View v) {
 

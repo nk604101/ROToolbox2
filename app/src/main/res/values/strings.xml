@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">ROToolbox</string>
+    <string name="lv">Lv 1 使用交易功能。可以和其他人物交換道具。交換時，用鼠表右鍵點擊想進行交換的人物。\n Lv 2 使用表情符號。可用 Alt + 0 ~ 9 及 Ctrl + 1 、 - 、 = 、  鍵表示感情。可按 Alt + L 鍵能使用更多的表情符號。\n Lv 3 可在原地坐下使恢復速度增加。可按 Insert 鍵或使用 / 坐下的指令。\n Lv 4 可以開設聊天室。可按 Alt + C 鍵。\n Lv 5 可以加入其它玩家的隊伍中。\n Lv 6 使用卡普拉職員倉庫保管道具。\n Lv 7 可以組隊。使用 / ORGANIZE \"組隊名稱\"的指令。可按 Alt + Z 鍵調整隊伍選項。\n Lv 9 可以轉職成第一職業。\n</string>
+    <string name="lv1">基本技能</string>
+    <string name="等級">等級</string>
+    <string name="str">STR力量</string>
+    <string name="agi">AGI敏捷</string>
+    <string name="vit">VIT體力</string>
+    <string name="in">INT智力</string>
+    <string name="luk">LUK幸運</string>
+    <string name="dex">DEX靈巧</string>
+    <string name="increase">+</string>
+    <string name="child">小孩</string>
+    <string name="shield">盾牌</string>
+    <string name="remnant">殘餘點數</string>
+    <string name="potion1">攻速第一類(取最高)</string>
+    <string name="potion2">攻速第二類(可累加)</string>
+    <string name="job">JOB</string>
+    <string name="potion_skill">攻速技能</string>
+    <string name="mhp">MHP:</string>
+    <string name="msp">MSP:</string>
+    <string name="arms">武器</string>
+    <string name="amor">防具</string>
+    <string name="hit">HIT命中:</string>
+    <string name="flee">FLEE迴避率:</string>
+    <string name="complete_flee">完全迴避率:</string>
+    <string name="atk">前ATK:</string>
+    <string name="def">前DEF:</string>
+    <string name="mdef">前MDEF:</string>
+    <string name="cri">CRI暴擊率:</string>
+    <string name="aspd">ASPD攻速:</string>
+    <string name="aria">數值變動詠唱:</string>
+    <string name="weapons_research">武器研究</string>
+    <string name="weapon_cost">武器成本</string>
+    <string name="armor_Cost">防具成本</string>
+    <string name="refining_costs">精煉費用</string>
+    <string name="metal_God">神之金屬價錢</string>
+    <string name="aluminum_prices">鋁價錢</string>
+    <string name="concentrate_metal_God">使用濃縮神之金屬</string>
+    <string name="concentrate_aluminum_prices">使用濃縮鋁</string>
+    <string name="_10">攻速增加濃縮汁10%</string>
+    <string name="_25">跳跳糖25%</string>
+    <string name="save">儲存</string>
+    <string name="load">讀取</string>
+    <string name="delete">刪除</string>
+
 </resources>
