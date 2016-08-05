@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
@@ -241,7 +242,7 @@ public class Numerical extends AppCompatActivity {
 
     protected void onCreate1(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_numerical);
 
         File f = getCacheDir();
         Log.d("FILE", f.toString());
@@ -299,22 +300,47 @@ public class Numerical extends AppCompatActivity {
         }
 
     }
-       
 
     public void click2(View v) {
 
         ArrayList<Student> mylist = new ArrayList();
 
-        Student s1 = new Student("12", "agi[i]", "vit[i]", "[i]", "[i]", "luk[i]", "[i]", "[i]", "[i]");
-        Student s2 = new Student(" str[]", "agi[]", "vit[]", "In[]", "dex[]", "luk[]", "speed1[]", "Basic_Level[]", "Class_Level[]");
-        Student s3 = new Student("12", "agi[]", "vit[i]", "In[i]", "dex[i]", "luk[i]", "speed1[i]", "Basic_Level[i]", "Class_Level[i]");
+        EditText ed = (EditText) findViewById(R.id.editText);
+        EditText ed2 = (EditText) findViewById(R.id.editText2);
+        EditText ed3 = (EditText) findViewById(R.id.editText3);
+
+        String n = ed.getText().toString();
+        String a = ed2.getText().toString();
+        String p = ed3.getText().toString();
+
+
+        Student s1 = new Student(12, 22, 15, "[i]", "[i]", "luk[i]", "[i]", "[i]", "[i]");
+
         mylist.add(s1);
-        mylist.add(s2);
-        mylist.add(s3);
+
         Gson gson = new Gson();
 
         String str = gson.toJson(mylist, new TypeToken<ArrayList<Student>>() {
         }.getType());
         Log.d("JSON", str);
+    }
+
+    public class MainActivity extends AppCompatActivity {
+        //int point=3;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_numerical);
+
+            int LV;
+            int LVM = 140;
+            //int LVM2=0;
+            int point = 45;
+
+            for (LV = 1; LV <= LVM; LV++) {
+                point = point + 3 + (LV - 1) / 5;
+            }
+            Log.d("TWork-01", "[" + LVM + "]" + (point));
+        }
     }
 }
