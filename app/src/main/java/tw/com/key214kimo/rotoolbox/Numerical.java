@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -221,18 +223,139 @@ public class Numerical extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item,
                 Class_Level);
         spinner3.setAdapter(adapter3);
+        //http://cooking-java.blogspot.tw/2010/02/android-spinner.html
+        //Android學習筆記 - 下拉式選單(Spinner)
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 /******************************************************/
         String Basic_Level[] = new String[175];
-        for (int i = 0; i < Basic_Level.length; i++) {
+                                               int i = 0;
+                                               ArrayAdapter<String> adapterlv = new ArrayAdapter<String>(Numerical.this,
+                                                       android.R.layout.simple_spinner_dropdown_item,
+                                                       Basic_Level);
+                                               for(
+
+                                               {
             Basic_Level[i] = "" + (i + 1);
+                                               }
+
+                                               i<Basic_Level.length i
+                                               ++)
+
+                                               {
+                                                   @Override
+                                                   public void onItemSelected (AdapterView < ? > parent, View view,int Basic_Level,
+                                                   long id){
+                                                   Log.d("T0808", "" + Basic_Level);
+                                                   Log.d("T0808-ID", "" + id);
+                                                   int LV = Basic_Level / 4;
+                                                   TextView tv28 = (TextView) findViewById(R.id.textView28);
+                                                   tv28.setText("" + LV);
+                                               }
+
+                                                   @Override
+                                                   public void onNothingSelected (AdapterView < ? > parent){
+                                               }
+            /*
+            int LV=134;
+            double str=90;
+            double agi=135;
+            double vit=1;
+            double dex=137;
+            double luk=90;
+            double in=90;
+            double def2=150;//後def(裝備def)
+            double mdef2=100;//後mdef(裝備mdef)
+            double atk1=str+luk/3+lv/4-dex/5;//前ATK
+            double matk1=Basic_Level/4+(in*1.5f)+dex/5+luk/3;//前MATK(素質MATK)
+            double matk2;
+            double hp_coefficient=0;//HP係數
+            double hp_magnification=5;//HP倍率
+            int i;
+            double hp_addition=1;
+            for(i=1;i<=lv;i++)
+            {
+                hp_addition+= i;}//Jov加成
+
+
+            double hp=35+(lv*hp_magnification)+hp_addition*hp_coefficient;//基本HP
+            double mhp=hp*(1+(vit/100));	//最大HP
+
+            double hit=175+dex+luk/3+lv;//命中
+            double flee=100+agi+luk/5+lv;//迴避率
+            double basic_aspd=145;//基礎攻速
+            double potion1=15;//攻速第一類(取最高)
+            double potion2=28;//攻速第二類(可累加)
+            double potion3=2;//攻速第三類(直接增加)
+
+            double aspd1=basic_aspd+java.lang.Math.pow(((agi*1120/111)+(dex*11/60)),(0.5f))*(1-((basic_aspd-144)/50));//攻速1
+            double aspd2=200-(200-aspd1)*(1-potion1/100);//攻速2
+            double aspd3=195-(195-aspd2)*(1-potion2/100)+potion3;//最終ASPD
+            double complete_flee=1+ luk *0.1;//完全迴避率
+            double aria=(1-(dex+in/2)/265);//數值變動詠唱
+            double cri=luk/3;//CRI暴擊率
+
+            double def1=(lv+vit)/2+(agi/5);//前def
+            double def3=(4000+def2)/(4000+(def2*10));//後def~乘算防禦的減免
+
+            double mdef1=in+(lv/4)+(vit/5)+(dex/5);//前mdef
+            double mdef3=(1000+mdef2)/(1000+(mdef2*10));//後mdef~乘算防禦的減免
+
+            double atk2;//後ATK
+            double atkarms;//武器總ATK
+            double karmsbasis;//武器ATK
+            double refiningATK;//武器精煉攻擊力
+            double karmsLv;//武器等級
+            double karmsRefining;//武器精煉度
+            double karms;
+            double karmsspecial;//特殊技能加值
+            double arrows;//箭矢ATK
+            double remote;//遠距離
+            double close;//近距離
+            double result = 0;
+
+
+            System.out.println("基本HP="+hp);
+            System.out.println("Jov加成="+hp_addition);
+            System.out.println("最大HP="+mhp);
+            System.out.println("攻速3="+aspd3);
+            System.out.println("前ATK(素質ATK)="+atk1);
+            System.out.println("前MATK(素質MATK)="+matk1);
+            System.out.println("命中hit="+hit);
+            System.out.println("迴避率flee="+flee);
+            System.out.println("完全迴避率="+complete_flee);
+            System.out.println("數值變動詠唱="+(100-(aria*100))+"%");
+            System.out.println("CRI暴擊率="+cri);
+            System.out.println("前def(數值DEF)="+def1);
+            System.out.println("後def(乘算防禦的減免)="+(1-def3)*100+"%");
+            System.out.println("前mdef="+mdef1);
+            System.out.println("後mdef(乘算防禦的減免)="+(1-mdef3)*100+"%");
+            System.out.println("基礎攻速="+basic_aspd);
+            System.out.println("攻速1="+aspd1);
+            System.out.println("攻速2="+aspd2);
+            System.out.println("攻速3="+aspd3);*/
         }
         spinner4 = (Spinner) findViewById(R.id.lv);
-        ArrayAdapter<String> adapterlv = new ArrayAdapter<String>(Numerical.this,
-                android.R.layout.simple_spinner_dropdown_item,
-                Basic_Level);
 
-        spinner4.setAdapter(adapterlv);
-    }
+                                               @Override
+                                               public void onItemSelected(AdapterView<?> parent, View view, int Basic_Level, long id) {
+                                                   Log.d("T0808", "" + Basic_Level);
+                                                   Log.d("T0808-ID", "" + id);
+                                                   int LV = Basic_Level / 4;
+                                                   TextView tv28 = (TextView) findViewById(R.id.textView28);
+                                                   tv28.setText("" + LV);
+                                               }
+
+                                               spinner4.setAdapter(adapterlv)
+
+                                                       spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+
+                                               @Override
+                                               public void onNothingSelected(AdapterView<?> parent) {
+                                               }
+
+                                               )
+
+                                           }
 
     /******************************************************/
 
