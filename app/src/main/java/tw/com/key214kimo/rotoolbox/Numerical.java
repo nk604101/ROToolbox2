@@ -210,22 +210,11 @@ public class Numerical extends AppCompatActivity {
                 fruits2);
         spinner2.setAdapter(adapter2);
 
-/******************************************************/
 
-        String Class_Level[] = new String[60];
-        for (int i = 0; i < Class_Level.length; i++) {
-            Class_Level[i] = "" + (i + 1);
-        }
-        spinner3 = (Spinner) findViewById(R.id.spinner3);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Numerical.this,
-                android.R.layout.simple_spinner_dropdown_item,
-                Class_Level);
-        spinner3.setAdapter(adapter3);
-        //http://cooking-java.blogspot.tw/2010/02/android-spinner.html
-        //Android學習筆記 - 下拉式選單(Spinner)
+
         //   /******************************************************/
         String Basic_Level[] = new String[175];
-        for (int i = 0; i < Class_Level.length; i++) {
+        for (int i = 0; i < Basic_Level.length; i++) {
             Basic_Level[i] = "" + (i + 1);
         }
         spinner4 = (Spinner) findViewById(R.id.lv);

@@ -17,7 +17,7 @@
     <string name="potion2">攻速第二類(可累加)</string>
     <string name="job">JOB</string>
     <string name="potion_skill">攻速技能</string>
-    <string name="mhp">MHP:</string>
+    <string name="m">裝備攻速:</string>
     <string name="msp">MSP:</string>
     <string name="arms">武器</string>
     <string name="amor">防具</string>
@@ -43,5 +43,9 @@
     <string name="save">儲存</string>
     <string name="load">讀取</string>
     <string name="delete">刪除</string>
+    <string-array name="text">
+        <item>攻速增加濃縮汁10%</item>
+        <item>跳跳糖25%</item>
+    </string-array>
 
 </resources>
