@@ -17,7 +17,9 @@
     <string name="potion2">攻速第二類(可累加)</string>
     <string name="job">JOB</string>
     <string name="potion_skill">攻速技能</string>
-    <string name="m">裝備攻速:</string>
+    <string name="m1">裝備攻速%:</string>
+    <string name="m2">裝備攻速:</string>
+    <string name="arms_species">武器種類:</string>
     <string name="msp">MSP:</string>
     <string name="arms">武器</string>
     <string name="amor">防具</string>
@@ -25,6 +27,7 @@
     <string name="flee">FLEE迴避率:</string>
     <string name="complete_flee">完全迴避率:</string>
     <string name="atk">前ATK:</string>
+    <string name="matk">前MATK:</string>
     <string name="def">前DEF:</string>
     <string name="mdef">前MDEF:</string>
     <string name="cri">CRI暴擊率:</string>
