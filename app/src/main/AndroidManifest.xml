@@ -2,15 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tw.com.key214kimo.rotoolbox"
     android:versionCode="1"
-    android:versionName="1.0">//versionCode內部版次序號
-
+    android:versionName="1.0">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo1"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@mipmap/logo1">
+        android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +21,7 @@
         <activity android:name=".Numerical" />
         <activity android:name=".skill" />
         <activity android:name=".Timer" />
-        <activity android:name=".Link"></activity>
+        <activity android:name=".Link" />
     </application>
 
 </manifest>

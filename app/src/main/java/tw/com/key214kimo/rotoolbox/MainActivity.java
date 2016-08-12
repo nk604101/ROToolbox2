@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+//@mipmap/logo1
 public class MainActivity extends AppCompatActivity {
 
     @Override

@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,9 +38,70 @@ public class Numerical extends AppCompatActivity {
     Spinner spinner3;
     Spinner spinner4;
 
+    //
+    String str[],ID;
+    float para1[];
+    int HandUsed[];
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        ROASlist list = new ROASlist(Numerical.this);
+
+        ArrayList<ROASlist> MList=list.DataList();
+        SubMenu[] menuList= new SubMenu[10];
+        Log.d("T0812",""+MList.get(1).SID);
+
+        for(int i=0;i<11;i++)
+        {
+            //Log.d("T0812-menu","[i:for1]:"+i);
+            for (int j=0; j<MList.size();j++)
+            {
+                //Log.d("T0812-menu","[j:for2]:"+j+",[size]"+MList.size());
+                int Sid=Integer.parseInt(MList.get(j).SID);
+                if((Sid/1000000)==i+1)
+                {
+                    menuList[i] = menu.addSubMenu(0, i, Menu.NONE, MList.get(j).ID);
+                    //Log.d("T0812-menu","["+i+"]:"+menuList[i]);
+                    break;
+                    //menu.setGroupCheckable(1, true, true);
+                }
+            }
+        }
+
+
+        for(int i=0; i<10;i++)
+        {
+            int GupID=i+1;
+            int itemID=0;
+            for(int j=0; j<MList.size();j++)
+            {
+                int Sid=Integer.parseInt(MList.get(j).SID);
+
+                if ((Sid / 1000000) == i+1)
+                {
+                    if(((Sid%1000000)/10000)==1 && ((Sid%10000)/100)==1)
+                    {
+                        menuList[i].add(500, 500, Menu.NONE,"2-1職業");
+                        //menuList[itemID].
+
+                    }
+                    if(((Sid%1000000)/10000)==2 && ((Sid%10000)/100)==1)
+                    {
+                        menuList[i].add(500, 500, Menu.NONE,"2-2職業");
+
+                    }
+                    menuList[i].add(i+10, itemID, Menu.NONE, MList.get(j).ID);
+                    //menuList[i].setGroupCheckable(GupID, true, true);
+                    itemID++;
+                }
+                menuList[i].setGroupEnabled(500,false);
+            }
+            //menuList[i].setGroupCheckable(GupID, true, true);
+        }
+
+        /*
         SubMenu menu1 = menu.addSubMenu(0, 0, Menu.NONE, "初學者");
         SubMenu menu2 = menu.addSubMenu(0, 1, Menu.NONE, "劍　士");
         SubMenu menu3 = menu.addSubMenu(0, 2, Menu.NONE, "魔法師");
@@ -124,6 +190,7 @@ public class Numerical extends AppCompatActivity {
 
         menu10.add(10, 0, Menu.NONE, "反叛者");
         menu10.setGroupCheckable(10, true, true);
+        */
         return true;
     }
 
@@ -309,4 +376,74 @@ public class Numerical extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.d("T0810-Smenu","Group:"+item.getGroupId());
+        //Log.d("T0810-Smenu","Item:"+item.getItemId());
+        Log.d("T0810-Smenu","Title:"+item.getTitle());
+        //if (item.getGroupId()==500 && item.getItemId()==500)
+
+        //ID="巫師";
+        ROASlist list = new ROASlist(Numerical.this);
+        ID= item.getTitle().toString();
+
+        list=list.SeacrhList(ID);
+        //Log.d("T0809-list", list.ID + ",空手:" + list.Empty);
+
+        TextView tv31 = (TextView)findViewById(R.id.textView31);
+        if(item.getGroupId()!=0)
+        tv31.setText(ID);
+        //tv.setText(ID);
+
+        ArrayList<ShowIDListArray> sid=list.ShowList(list);
+        str = new String[sid.size()];
+        para1 = new float[sid.size()];
+        HandUsed=new int[sid.size()];
+        final float shd=Float.parseFloat(list.Shield);
+        for(int i=0; i< sid.size();i++)
+        {
+            //Log.d("T0809-E",sid.get(i).Weapon+":"+sid.get(i).speed);
+            str[i]=sid.get(i).Weapon;
+            para1[i]=Float.parseFloat(sid.get(i).speed);
+            HandUsed[i]=sid.get(i).HandUsed;
+            Log.d("T0809-E1",str[i]+":"+para1[i]+":"+HandUsed[i]);
+            //sid.get(i).Weapon;
+            //sid.get(i).speed;
+        }
+        Spinner sp1= (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this,android.R.layout.simple_list_item_1,str);
+        sp1.setAdapter(adpt);
+        sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                CheckBox cb = (CheckBox)findViewById(R.id.checkBox);
+                if(HandUsed[i]==2)
+                {
+                    cb.setEnabled(false);
+                    cb.setChecked(false);
+                }else {
+                    cb.setEnabled(true);
+                }
+
+                if(cb.isChecked())
+                    Log.d("T0813-shd",""+shd);
+                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Log.d("T0813-shd",""+isChecked);
+                    }
+                });
+                //tv42.setText(""+para1[i]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return super.onOptionsItemSelected(item);
+    }
 }
