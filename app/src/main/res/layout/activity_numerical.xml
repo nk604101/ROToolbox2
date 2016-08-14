@@ -327,12 +327,27 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/textView31"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="職業"
+                        android:id="@+id/textView32"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:id="@+id/textView31"
+                        android:gravity="center" />
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -44,16 +44,23 @@ public class Numerical extends AppCompatActivity {
     int InPos;
     int DexPos;
     int LukPos;
+    int LV;
     TextView tv16;
-    Spinner spinner1;
+    //Spinner spinner1;   //buff type1
     Spinner spinner2;
-    Spinner spinner3;
-    Spinner spinner4;
+    //Spinner spinner3;
+    Spinner spLV;
 
     //
-    String str[],ID;
-    float para1[];
-    int HandUsed[];
+    CheckBox cb;       //裝備盾牌
+    Spinner sp1;       //buff type1
+    CheckBox cb3;      //buff type2-1
+    CheckBox cb4;      //buff type2_2
+    String str[],ID;    //str 可裝備武器列表 ID職業名
+    float para1[];  //可裝備武器攻速
+    int HandUsed[]; //武器手持類型 1單手 2雙手
+
+    float type1,type2_1,type2_2,shd,WAsp;
 
 
     @Override
@@ -120,12 +127,12 @@ public class Numerical extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numerical);
 
-        StrPos=1;
-        AgiPos=1;
-        VitPos=1;
-        InPos=1;
-        DexPos=1;
-        LukPos=1;
+        cb = (CheckBox)findViewById(R.id.checkBox);
+        sp1 = (Spinner)findViewById(R.id.spinner1);
+        cb3=(CheckBox)findViewById(R.id.checkBox3);
+        cb4=(CheckBox)findViewById(R.id.checkBox4);
+
+
 
         String str[] = new String[130];
         for (int i = 0; i < str.length; i++) {
@@ -269,11 +276,11 @@ public class Numerical extends AppCompatActivity {
 /******************************************************/
 
         String speed1[] = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%", "毒藥瓶20%(十次刺客/十字斬首者限定)"};
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        sp1 = (Spinner) findViewById(R.id.spinner1);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 speed1);
-        spinner1.setAdapter(adapter1);
+        sp1.setAdapter(adapter1);
 
 /******************************************************/
         String fruits2[] = {"Save1:on SaveData", "Save2:on SaveData", "Save3:on SaveData"};
@@ -290,11 +297,26 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < Basic_Level.length; i++) {
             Basic_Level[i] = "" + (i + 1);
         }
-        spinner4 = (Spinner) findViewById(R.id.lv);
+        spLV = (Spinner) findViewById(R.id.lv);
         ArrayAdapter<String> adapterlv = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 Basic_Level);
-        spinner4.setAdapter(adapterlv);
+        spLV.setAdapter(adapterlv);
+        spLV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LV=position+1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ResetPara();//reset表單
+        ResetLV();
+
     }
     protected void onCreate1(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -386,7 +408,10 @@ public class Numerical extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Log.d("T8014-In",spinnerIn.getSelectedItem().toString());
+        ResetPara();//reset
+
+        Log.d("T0814","LV:"+LV);
+
         //取得職業資料
         ROASlist list = new ROASlist(Numerical.this);
         ID= item.getTitle().toString();
@@ -394,87 +419,182 @@ public class Numerical extends AppCompatActivity {
         //將所選的職業名稱丟入取出數值表
         list=list.SeacrhList(ID);
         //Log.d("T0809-list", list.ID + ",空手:" + list.Empty);
+        if(item.getGroupId()!=0) {
+            //秀出目前職業
+            TextView tv31 = (TextView) findViewById(R.id.textView31);
+            //
+            //if(item.getGroupId()!=0)
+            tv31.setText(ID);
+            //tv.setText(ID);
 
-        //秀出目前職業
-        TextView tv31 = (TextView)findViewById(R.id.textView31);
-        //
-        if(item.getGroupId()!=0)
-        tv31.setText(ID);
-        //tv.setText(ID);
+            //將可裝備武器資料 放到 Spinner
+            ArrayList<ShowIDListArray> sid = list.ShowList(list);
+            str = new String[sid.size()];   //決定 顯示數量
+            para1 = new float[sid.size()];
+            HandUsed = new int[sid.size()];
+            //shd=Float.parseFloat(list.Shield);
+            final float listShd = Float.parseFloat(list.Shield);
+            //將資料放置同一 position
+            for (int i = 0; i < sid.size(); i++) {
+                str[i] = sid.get(i).Weapon;
+                para1[i] = Float.parseFloat(sid.get(i).speed);
+                HandUsed[i] = sid.get(i).HandUsed;
+                Log.d("T0809-E1", str[i] + ":" + para1[i] + ":" + HandUsed[i]);
+            }
+            final Spinner sp1 = (Spinner) findViewById(R.id.spinner);
+            ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this, android.R.layout.simple_list_item_1, str);
+            sp1.setAdapter(adpt);
 
-        //將可裝備武器資料 放到 Spinner
-        ArrayList<ShowIDListArray> sid=list.ShowList(list);
-        str = new String[sid.size()];   //決定 顯示數量
-        para1 = new float[sid.size()];
-        HandUsed=new int[sid.size()];
-        final float shd=Float.parseFloat(list.Shield);
-        //將資料放置同一 position
-        for(int i=0; i< sid.size();i++)
-        {
-            str[i]=sid.get(i).Weapon;
-            para1[i]=Float.parseFloat(sid.get(i).speed);
-            HandUsed[i]=sid.get(i).HandUsed;
-            Log.d("T0809-E1",str[i]+":"+para1[i]+":"+HandUsed[i]);
-        }
-        final Spinner sp1= (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this,android.R.layout.simple_list_item_1,str);
-        sp1.setAdapter(adpt);
-
-        sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                CheckBox cb = (CheckBox)findViewById(R.id.checkBox);
-                if(HandUsed[i]==2)
-                {
-                    cb.setEnabled(false);
+            sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    CheckBox cb = (CheckBox) findViewById(R.id.checkBox);
                     cb.setChecked(false);
-                }else {
-                    cb.setEnabled(true);
+                    Spinner sp1 = (Spinner) findViewById(R.id.spinner1);
+                    sp1.setSelection(0);
+                    CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
+                    CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
+                    cb3.setChecked(false);
+                    cb4.setChecked(false);
+
+                    if (HandUsed[i] == 2) {
+                        cb.setEnabled(false);
+                        cb.setChecked(false);
+                    } else {
+                        cb.setEnabled(true);
+                    }
+                    WAsp = para1[i];
+                    AttSpeed();
+
+
+                    cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            Log.d("T0813-shd", "" + shd);
+                            Log.d("T0813-shd", "" + isChecked);
+                            if (isChecked) {
+                                shd = listShd;
+                                AttSpeed();
+                            } else {
+                                shd = 0;
+                                AttSpeed();
+                            }
+                        }
+                    });
+
+
+                    sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            Log.d("T0813-buffS", "" + position);
+                            switch (position) {
+                                case 1:
+                                case 2:
+                                    type1 = 1.1f;
+                                    break;
+                                case 3:
+                                    type1 = 1.15f;
+                                    break;
+                                case 4:
+                                case 5:
+                                    type1 = 1.2f;
+                                    break;
+                            }
+                            AttSpeed();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+
+                    cb3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
+                                type2_1 = 0.1f;
+                            else
+                                type2_1 = 0;
+
+                            AttSpeed();
+                        }
+                    });
+
+
+                    cb4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
+                                type2_2 = 0.25f;
+
+                            else
+                                type2_2 = 0;
+
+                            AttSpeed();
+                        }
+                    });
+
                 }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Log.d("T0813-shd",""+shd);
-                        Log.d("T0813-shd",""+isChecked);
-                    }
-                });
-
-                Spinner sp1 = (Spinner)findViewById(R.id.spinner1);
-
-                sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d("T0813-buffS",""+position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
+                }
+            });
+        }
         return super.onOptionsItemSelected(item);
     }
-    public void AttSpeed(int WPos,int BuffPos)
-    {
 
+    //攻速計算
+    public void AttSpeed()
+    {
+        //float sumW;
+        String sumW;
+        sumW="Shd:"+shd+",Type1:"+type1+",Type2:"+(1+type2_1+type2_2)+",WAsp:"+WAsp;
+        Log.d("T0814-Attspd",sumW);
     }
 
+
+    //技能點計算
     public void ParaValue()
     {
         int sum;
+
         sum=StrPos+AgiPos+VitPos+InPos+DexPos+LukPos;
         Log.d("T0814-A","sum:"+sum);
         tv16=(TextView)findViewById(R.id.textView16);
         tv16.setText(""+sum);
+    }
+
+    public void ResetPara()
+    {
+        cb.setChecked(false);
+        sp1.setSelection(0);
+        cb3.setChecked(false);
+        cb4.setChecked(false);
+
+        shd=0;
+        type1=1;
+        type2_1=0;
+        type2_2=0;
+    }
+    public void ResetLV()
+    {
+        spLV.setSelection(0);
+        spinnerStr.setSelection(0);
+        spinnerAgi.setSelection(0);
+        spinnerVit.setSelection(0);
+        spinnerIn.setSelection(0);
+        spinnerDex.setSelection(0);
+        spinnerLuk.setSelection(0);
+        LV=1;
+        StrPos=1;
+        AgiPos=1;
+        VitPos=1;
+        InPos=1;
+        DexPos=1;
+        LukPos=1;
     }
 }
