@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -45,6 +46,7 @@ public class Numerical extends AppCompatActivity {
     int DexPos;
     int LukPos;
     int LV;
+    int MorPpint;
     TextView tv16;
     //Spinner spinner1;   //buff type1
     Spinner spinner2;
@@ -132,13 +134,46 @@ public class Numerical extends AppCompatActivity {
         cb3=(CheckBox)findViewById(R.id.checkBox3);
         cb4=(CheckBox)findViewById(R.id.checkBox4);
 
+        spLV = (Spinner) findViewById(R.id.lv);
+        spinnerStr = (Spinner) findViewById(R.id.str);
+        spinnerAgi = (Spinner) findViewById(R.id.agi);
+        spinnerVit = (Spinner) findViewById(R.id.vit);
+        spinnerIn = (Spinner) findViewById(R.id.in);
+        spinnerDex = (Spinner) findViewById(R.id.dex);
+        spinnerLuk = (Spinner) findViewById(R.id.luk);
+
+        ResetPara();//reset表單
+        ResetLV();
+
+        //   /******************************************************/
+        String Basic_Level[] = new String[175];
+        for (int i = 0; i < Basic_Level.length; i++) {
+            Basic_Level[i] = "" + (i + 1);
+        }
+
+        ArrayAdapter<String> adapterlv = new ArrayAdapter<String>(Numerical.this,
+                android.R.layout.simple_spinner_dropdown_item,
+                Basic_Level);
+        spLV.setAdapter(adapterlv);
+        spLV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LV=position+1;
+                ParaValue();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         String str[] = new String[130];
         for (int i = 0; i < str.length; i++) {
             str[i] = "" + (i + 1);
         }
-        spinnerStr = (Spinner) findViewById(R.id.str);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 str);
@@ -161,7 +196,7 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < agi.length; i++) {
             agi[i] = "" + (i + 1);
         }
-        spinnerAgi = (Spinner) findViewById(R.id.agi);
+
         ArrayAdapter<String> adapteragi = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 agi);
@@ -184,7 +219,7 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < vit.length; i++) {
             vit[i] = "" + (i + 1);
         }
-        spinnerVit = (Spinner) findViewById(R.id.vit);
+
         ArrayAdapter<String> adapteragivit = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 vit);
@@ -207,7 +242,7 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < agi.length; i++) {
             In[i] = "" + (i + 1);
         }
-        spinnerIn = (Spinner) findViewById(R.id.in);
+
         ArrayAdapter<String> adapteragiin = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 In);
@@ -231,7 +266,7 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < agi.length; i++) {
             dex[i] = "" + (i + 1);
         }
-        spinnerDex = (Spinner) findViewById(R.id.dex);
+
         ArrayAdapter<String> adapteragidex = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 dex);
@@ -255,7 +290,7 @@ public class Numerical extends AppCompatActivity {
         for (int i = 0; i < agi.length; i++) {
             luk[i] = "" + (i + 1);
         }
-        spinnerLuk = (Spinner) findViewById(R.id.luk);
+
         ArrayAdapter<String> adapteragiluk = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
                 luk);
@@ -290,32 +325,6 @@ public class Numerical extends AppCompatActivity {
                 fruits2);
         spinner2.setAdapter(adapter2);
 
-
-
-        //   /******************************************************/
-        String Basic_Level[] = new String[175];
-        for (int i = 0; i < Basic_Level.length; i++) {
-            Basic_Level[i] = "" + (i + 1);
-        }
-        spLV = (Spinner) findViewById(R.id.lv);
-        ArrayAdapter<String> adapterlv = new ArrayAdapter<String>(Numerical.this,
-                android.R.layout.simple_spinner_dropdown_item,
-                Basic_Level);
-        spLV.setAdapter(adapterlv);
-        spLV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LV=position+1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ResetPara();//reset表單
-        ResetLV();
 
     }
     protected void onCreate1(Bundle savedInstanceState) {
@@ -432,6 +441,8 @@ public class Numerical extends AppCompatActivity {
             str = new String[sid.size()];   //決定 顯示數量
             para1 = new float[sid.size()];
             HandUsed = new int[sid.size()];
+            MorPpint=Integer.parseInt(list.MorPT);
+            //Log.d("T0814-point",list.MorPT);
             //shd=Float.parseFloat(list.Shield);
             final float listShd = Float.parseFloat(list.Shield);
             //將資料放置同一 position
@@ -560,10 +571,13 @@ public class Numerical extends AppCompatActivity {
     //技能點計算
     public void ParaValue()
     {
-        int sum;
+        int sum=0;
+        int point;
+        point=SkillPoint(LV)+MorPpint;
 
-        sum=StrPos+AgiPos+VitPos+InPos+DexPos+LukPos;
-        Log.d("T0814-A","sum:"+sum);
+        sum=point-UsePoint(StrPos)-UsePoint(AgiPos)-UsePoint(VitPos)-
+                UsePoint(InPos)-UsePoint(DexPos)-UsePoint(LukPos);
+        //Log.d("T0814-A","sum:"+sum);
         tv16=(TextView)findViewById(R.id.textView16);
         tv16.setText(""+sum);
     }
@@ -596,5 +610,54 @@ public class Numerical extends AppCompatActivity {
         InPos=1;
         DexPos=1;
         LukPos=1;
+        MorPpint=0;
+    }
+    //
+    public int SkillPoint (int LV)
+    {
+        int point=45;
+        int LVMax=175;
+
+        if(LV<=100) {
+            for (int i = 1; i <= LV; i++) {
+                point = point + 3 + (i - 1) / 5;
+            }
+
+        }else  if(LV>=101 && LV <=LVMax)
+        {
+            for (int i = 1; i <= 100; i++) {
+                point = point + 3 + (i - 1) / 5;
+            }
+            for (int i=1 ;i<=LV-100;i++)
+            {
+                point = point + 23 + (i - 1) / 10;
+            }
+        }
+        return point;
+    }
+    public int UsePoint(int paraUsed)
+    {
+        int pointUsed=0;
+        int paraUsedMax=130;
+        //int paraUsed1=99;
+        if(paraUsed<=100) {
+            for (int i = 2; i <= paraUsed; i++) {
+                pointUsed = pointUsed +(2 + (i-2) / 10);
+                Log.d("T0814-para","para1"+pointUsed);
+            }
+
+        }else  if(paraUsed>=101 && paraUsed<=paraUsedMax)
+        {
+            for (int i = 2; i <= 100; i++) {
+                pointUsed = pointUsed +(2 + (i-2) / 10);
+                Log.d("T0814-para","para2"+pointUsed);
+            }
+            for (int i=1 ;i<=paraUsed-100;i++)
+            {
+                pointUsed = pointUsed + (16 + (i-1)/5*4);
+                Log.d("T0814-para","para3"+pointUsed);
+            }
+        }
+        return pointUsed;
     }
 }
