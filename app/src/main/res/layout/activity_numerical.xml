@@ -140,7 +140,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/edSTR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -173,7 +173,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/edAGI"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -205,7 +205,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText3"
+                        android:id="@+id/edVIT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -237,7 +237,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText4"
+                        android:id="@+id/edINT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -269,7 +269,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText5"
+                        android:id="@+id/edDEX"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -301,7 +301,7 @@
                         android:text="@string/increase" />
 
                     <EditText
-                        android:id="@+id/editText6"
+                        android:id="@+id/edLUK"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -472,7 +472,7 @@
                         android:text="@string/atk" />
 
                     <TextView
-                        android:id="@+id/bofATK"
+                        android:id="@+id/stBofATK"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -492,7 +492,7 @@
                         android:text="@string/matk" />
 
                     <TextView
-                        android:id="@+id/textView26"
+                        android:id="@+id/stBorMATK"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -511,10 +511,10 @@
                         android:text="@string/hit" />
 
                     <TextView
-                        android:id="@+id/textView38"
+                        android:id="@+id/stHIT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical" />
+                        android:gravity="right" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -530,7 +530,7 @@
                         android:text="@string/flee" />
 
                     <TextView
-                        android:id="@+id/textView40"
+                        android:id="@+id/stFLEE"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -549,7 +549,7 @@
                         android:text="@string/complete_flee" />
 
                     <TextView
-                        android:id="@+id/textView46"
+                        android:id="@+id/stFDodge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -568,7 +568,7 @@
                         android:text="@string/aspd" />
 
                     <TextView
-                        android:id="@+id/tvASPD"
+                        android:id="@+id/stASPD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -587,7 +587,7 @@
                         android:text="@string/aria" />
 
                     <TextView
-                        android:id="@+id/textView44"
+                        android:id="@+id/stCastTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -606,7 +606,7 @@
                         android:text="@string/cri" />
 
                     <TextView
-                        android:id="@+id/textView48"
+                        android:id="@+id/stCRI"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -625,7 +625,7 @@
                         android:text="@string/def" />
 
                     <TextView
-                        android:id="@+id/textView50"
+                        android:id="@+id/stBorDEF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />
@@ -644,7 +644,7 @@
                         android:text="@string/mdef" />
 
                     <TextView
-                        android:id="@+id/textView52"
+                        android:id="@+id/stBofMDEF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right" />

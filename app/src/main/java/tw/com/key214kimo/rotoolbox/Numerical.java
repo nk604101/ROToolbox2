@@ -71,7 +71,12 @@ public class Numerical extends AppCompatActivity {
     float para1[];  //可裝備武器攻速
     int HandUsed[]; //武器手持類型 1單手 2雙手
     TextView tvASPD;
-    TextView borATK;
+    TextView borATK,borDEF,borMDEF,stCRI,stFLEE,stFDodge,stHIT,stCastTime;
+    TextView borMATK;
+
+    EditText edSTR,edAGI,edVIT,edINT,edDEX,edLUK;
+
+    DecimalFormat df;
 
     EditText edType3,edType2_3;
 
@@ -142,6 +147,8 @@ public class Numerical extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numerical);
 
+        df = new DecimalFormat("#.##"); //設定顯示小數點第二位
+
         cb = (CheckBox)findViewById(R.id.checkBox);
         sp1 = (Spinner)findViewById(R.id.spinner1);
         cb3=(CheckBox)findViewById(R.id.checkBox3);
@@ -155,11 +162,28 @@ public class Numerical extends AppCompatActivity {
         spinnerDex = (Spinner) findViewById(R.id.dex);
         spinnerLuk = (Spinner) findViewById(R.id.luk);
 
-        tvASPD=(TextView)findViewById(R.id.tvASPD);
+        tvASPD=(TextView)findViewById(R.id.stASPD);
         edType2_3=(EditText)findViewById(R.id.edType23);
         edType3=(EditText)findViewById(R.id.edType3);
+        sp1 = (Spinner) findViewById(R.id.spinner1);
 
-        borATK=(TextView)findViewById(R.id.bofATK);
+        borATK=(TextView)findViewById(R.id.stBofATK);
+        borMATK=(TextView)findViewById(R.id.stBorMATK);
+        borDEF=(TextView)findViewById(R.id.stBorDEF);
+        borMDEF=(TextView)findViewById(R.id.stBofMDEF);
+        stCRI=(TextView)findViewById(R.id.stCRI);
+        stHIT=(TextView)findViewById(R.id.stHIT);
+        stFLEE=(TextView)findViewById(R.id.stFLEE);
+        stFDodge=(TextView)findViewById(R.id.stFDodge);
+        stCastTime=(TextView)findViewById(R.id.stCastTime);
+
+        edSTR=(EditText)findViewById(R.id.edSTR);
+        edAGI=(EditText)findViewById(R.id.edAGI);
+        edVIT =(EditText)findViewById(R.id.edVIT);
+        edINT=(EditText)findViewById(R.id.edINT);
+        edDEX=(EditText)findViewById(R.id.edDEX);
+        edLUK=(EditText)findViewById(R.id.edLUK);
+
 
         checkShowList=false;
 
@@ -181,6 +205,8 @@ public class Numerical extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LV=position+1;
                 ParaValue();
+                StateShow();
+                AttSpeed();
             }
 
             @Override
@@ -321,14 +347,7 @@ public class Numerical extends AppCompatActivity {
 
             }
         });
-/******************************************************/
 
-        String speed1[] = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%", "毒藥瓶20%(十次刺客/十字斬首者限定)"};
-        sp1 = (Spinner) findViewById(R.id.spinner1);
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(Numerical.this,
-                android.R.layout.simple_spinner_dropdown_item,
-                speed1);
-        sp1.setAdapter(adapter1);
 
 /******************************************************/
         String fruits2[] = {"Save1:on SaveData", "Save2:on SaveData", "Save3:on SaveData"};
@@ -405,13 +424,13 @@ public class Numerical extends AppCompatActivity {
 
         ArrayList<Student> mylist = new ArrayList();
 
-        EditText ed = (EditText) findViewById(R.id.editText);
-        EditText ed2 = (EditText) findViewById(R.id.editText2);
-        EditText ed3 = (EditText) findViewById(R.id.editText3);
+        //EditText ed = (EditText) findViewById(R.id.editText);
+       //EditText ed2 = (EditText) findViewById(R.id.editText2);
+        //EditText ed3 = (EditText) findViewById(R.id.editText3);
 
-        String n = ed.getText().toString();
-        String a = ed2.getText().toString();
-        String p = ed3.getText().toString();
+       // String n = ed.getText().toString();
+        //String a = ed2.getText().toString();
+        //String p = ed3.getText().toString();
 
 
         Student s1 = new Student(12, 22, 15, "[i]", "[i]", "luk[i]", "[i]", "[i]", "[i]");
@@ -472,9 +491,11 @@ public class Numerical extends AppCompatActivity {
             sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    checkShowList = true;
+
                     ParaValue();
                     StateShow();
-                    checkShowList=true;
                     CheckBox cb = (CheckBox) findViewById(R.id.checkBox);
                     cb.setChecked(false);
                     Spinner sp1 = (Spinner) findViewById(R.id.spinner1);
@@ -509,26 +530,43 @@ public class Numerical extends AppCompatActivity {
                         }
                     });
 
+                    /******************************************************/
+
+                    String[] speed1 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%", "毒藥瓶20%(十字刺客/十字斬首者限定)"};
+                    String[] speed2 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%"};
+                    ArrayAdapter<String> adapter1;
+                    if(ID.equals("十字刺客")||ID.equals("十字斬首者"))
+                    adapter1 = new ArrayAdapter<String>(Numerical.this,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            speed1);
+                    else
+                        adapter1 = new ArrayAdapter<String>(Numerical.this,
+                                android.R.layout.simple_spinner_dropdown_item,
+                                speed2);
+                    sp1.setAdapter(adapter1);
                     //第一類攻速
                     sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             Log.d("T0813-buffS", "" + position);
-                            switch (position) {
-                                case 1:
-                                case 2:
-                                    type1 = 10f;
-                                    break;
-                                case 3:
-                                    type1 = 15f;
-                                    break;
-                                case 4:
-                                case 5:
-                                    type1 = 20f;
-                                    break;
-                            }
+
+                                    switch (position)
+                                    {
+                                        case 1:
+                                        case 2:
+                                            type1 = 10f;
+                                            break;
+                                        case 3:
+                                            type1 = 15f;
+                                            break;
+                                        case 4:
+                                        case 5:
+                                            type1 = 20f;
+                                            break;
+                                    }
                             AttSpeed();
                         }
+
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
@@ -595,6 +633,102 @@ public class Numerical extends AppCompatActivity {
                             AttSpeed();
                         }
                     });
+                    edSTR.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
+                    edAGI.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
+                    edVIT.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
+                    edINT.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
+                    edDEX.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
+                    edLUK.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            StateShow();
+                        }
+                    });
 
                 }
 
@@ -647,24 +781,71 @@ public class Numerical extends AppCompatActivity {
             bs_aspd2 = (float) (1 - ((basic_aspd - baseA) / 50));
         }
 
-        double aspd1=basic_aspd+Math.pow(((AgiPos*1120/111)+(DexPos*11/60)),0.5f)*bs_aspd2;//攻速1
-        double aspd2=200-(200-aspd1)*(1-potion1/100);//攻速2
-        double aspd3=200-(195-aspd2)*(1-potion2/100)+potion3-shd;//最終ASPD
+        double aspd1=basic_aspd+Math.pow(((AgiPos*1120/111f)+(DexPos*11/60)),0.5f)*bs_aspd2;//攻速1
+        double aspd2=200-(200-aspd1)*(1-potion1/100f);//攻速2
+        double aspd3=200-(195-aspd2)*(1-potion2/100f)+potion3-shd;//最終ASPD
         Log.d("T0814-Attspd","1:"+aspd1);
         Log.d("T0814-Attspd","2:"+aspd2);
         Log.d("T0814-Attspd","3:"+aspd3);
-        DecimalFormat df = new DecimalFormat("#.##");
+
         String totalASPD=df.format(aspd3);
         if(checkShowList)
-        tvASPD.setText(totalASPD+"   ");
+        tvASPD.setText(totalASPD+"       ");
     }
     public void StateShow()
     {
-        double atk1=StrPos+LukPos*0.3+LV/4+DexPos/5;//前ATK
-        double matk1=(LV/4)+(InPos*1.5)+(DexPos/5)+(LukPos*0.3);//前MATK(素質MATK)
+        int totalSTR,totalAGI,totalVIT,totalINT,totalDEX,totalLUK;
+        if(edSTR.getText().toString().trim().equals(""))
+            totalSTR=StrPos+0;
+        else
+            totalSTR=StrPos+Integer.parseInt(edSTR.getText().toString());
 
-        borATK.setText(atk1+"   ");
+        if(edAGI.getText().toString().trim().equals(""))
+            totalAGI=AgiPos+0;
+        else
+            totalAGI=AgiPos+Integer.parseInt(edAGI.getText().toString());
 
+        if(edVIT.getText().toString().trim().equals(""))
+            totalVIT=VitPos+0;
+        else
+            totalVIT=VitPos+Integer.parseInt(edVIT.getText().toString());
+
+        if(edINT.getText().toString().trim().equals(""))
+            totalINT=InPos+0;
+        else
+            totalINT=InPos+Integer.parseInt(edINT.getText().toString());
+
+        if(edDEX.getText().toString().trim().equals(""))
+            totalDEX=DexPos+0;
+        else
+            totalDEX=DexPos+Integer.parseInt(edDEX.getText().toString());
+
+        if(edLUK.getText().toString().trim().equals(""))
+            totalLUK=LukPos+0;
+        else
+            totalLUK=LukPos+Integer.parseInt(edLUK.getText().toString());
+
+        double atk1=totalSTR+totalLUK*0.3+LV/4f+totalDEX/5f;    //前ATK
+        double matk1=(LV/4f)+(totalINT*1.5)+(totalDEX/5f)+(totalLUK*0.3);    //前MATK(素質MATK)
+        double hit=175+totalDEX+(totalLUK*0.3)+LV;    //命中
+        double flee=100+totalAGI+totalLUK/5f+LV;   //迴避率
+        double complete_flee=1+ totalLUK/10f; //完全迴避率
+        double aria=(1-(totalDEX+totalINT/2f)/265f); //數值變動詠唱
+        double cri=totalLUK*0.3+1;   //CRI暴擊率
+        double def1=(LV+totalVIT)/2f+(totalAGI/5f);//前def
+        double mdef1=totalINT+(LV/4f)+(totalVIT/5f)+(totalDEX/5f);//前mdef
+
+        if(checkShowList) {
+            borATK.setText(df.format(atk1) + "       ");
+            borMATK.setText(df.format(matk1) + "       ");
+            stHIT.setText(df.format(hit) + "       ");
+            stCRI.setText(df.format(cri) + "       ");
+            stCastTime.setText(df.format(aria) + "       ");
+            stFDodge.setText(df.format(complete_flee) + "       ");
+            stFLEE.setText(df.format(flee) + "       ");
+            borDEF.setText(df.format(def1) + "       ");
+            borMDEF.setText(df.format(mdef1) + "       ");
+        }
         double hp_coefficient=0.7;//HP係數
         double hp_magnification=5;//HP倍率
     }
