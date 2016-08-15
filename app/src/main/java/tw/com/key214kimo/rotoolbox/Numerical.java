@@ -552,6 +552,9 @@ public class Numerical extends AppCompatActivity {
 
                                     switch (position)
                                     {
+                                        case 0:
+                                            type1 = 0;
+                                            break;
                                         case 1:
                                         case 2:
                                             type1 = 10f;
@@ -783,7 +786,7 @@ public class Numerical extends AppCompatActivity {
 
         double aspd1=basic_aspd+Math.pow(((AgiPos*1120/111f)+(DexPos*11/60)),0.5f)*bs_aspd2;//攻速1
         double aspd2=200-(200-aspd1)*(1-potion1/100f);//攻速2
-        double aspd3=200-(195-aspd2)*(1-potion2/100f)+potion3-shd;//最終ASPD
+        double aspd3=195-(195-aspd2)*(1-potion2/100f)+potion3-shd;//最終ASPD
         Log.d("T0814-Attspd","1:"+aspd1);
         Log.d("T0814-Attspd","2:"+aspd2);
         Log.d("T0814-Attspd","3:"+aspd3);
@@ -907,7 +910,7 @@ public class Numerical extends AppCompatActivity {
                 point = point + 3 + (i - 1) / 5;
             }
 
-        }else  if(LV>=101 && LV <=LVMax)
+        }else  if(LV>=101 && LV <=150)
         {
             for (int i = 1; i <= 100; i++) {
                 point = point + 3 + (i - 1) / 5;
@@ -916,7 +919,21 @@ public class Numerical extends AppCompatActivity {
             {
                 point = point + 23 + (i - 1) / 10;
             }
+        }else if(LV>=151 && LV<=LVMax)
+        {
+            for (int i = 1; i <= 100; i++) {
+                point = point + 3 + (i - 1) / 5;
+            }
+            for (int i=1 ;i<=150-100;i++)
+            {
+                point = point + 23 + (i - 1) / 10;
+            }
+            for (int i=1 ;i<=LV-150;i++)
+            {
+                point = point + 28 + (i - 1) / 7;
+            }
         }
+
         return point;
     }
     public int UsePoint(int paraUsed)
