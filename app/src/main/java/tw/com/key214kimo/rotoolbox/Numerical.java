@@ -1,8 +1,11 @@
 package tw.com.key214kimo.rotoolbox;
 
 
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,9 +33,14 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Numerical extends AppCompatActivity {
+    final int MAX_Para_Level=130;
+    final int MAX_Level=175;
+    boolean checkShowList;
+
     Spinner spinnerStr;
     Spinner spinnerAgi;
     Spinner spinnerVit;
@@ -46,7 +54,7 @@ public class Numerical extends AppCompatActivity {
     int DexPos;
     int LukPos;
     int LV;
-    int MorPpint;
+    int MorPoint;
     TextView tv16;
     //Spinner spinner1;   //buff type1
     Spinner spinner2;
@@ -55,14 +63,20 @@ public class Numerical extends AppCompatActivity {
 
     //
     CheckBox cb;       //裝備盾牌
+    Spinner sp;        //武器選項
     Spinner sp1;       //buff type1
     CheckBox cb3;      //buff type2-1
     CheckBox cb4;      //buff type2_2
     String str[],ID;    //str 可裝備武器列表 ID職業名
     float para1[];  //可裝備武器攻速
     int HandUsed[]; //武器手持類型 1單手 2雙手
+    TextView tvASPD;
+    TextView borATK;
 
-    float type1,type2_1,type2_2,shd,WAsp;
+    EditText edType3,edType2_3;
+
+    float type1,type2_1,type2_2,type2_3,shd,WAsp;
+    float type3;
 
 
     @Override
@@ -94,7 +108,6 @@ public class Numerical extends AppCompatActivity {
 
         for(int i=0; i<10;i++)
         {
-            int GupID=i+1;
             int itemID=0;
             for(int j=0; j<MList.size();j++)
             {
@@ -142,11 +155,19 @@ public class Numerical extends AppCompatActivity {
         spinnerDex = (Spinner) findViewById(R.id.dex);
         spinnerLuk = (Spinner) findViewById(R.id.luk);
 
+        tvASPD=(TextView)findViewById(R.id.tvASPD);
+        edType2_3=(EditText)findViewById(R.id.edType23);
+        edType3=(EditText)findViewById(R.id.edType3);
+
+        borATK=(TextView)findViewById(R.id.bofATK);
+
+        checkShowList=false;
+
         ResetPara();//reset表單
         ResetLV();
 
         //   /******************************************************/
-        String Basic_Level[] = new String[175];
+        String Basic_Level[] = new String[MAX_Level];
         for (int i = 0; i < Basic_Level.length; i++) {
             Basic_Level[i] = "" + (i + 1);
         }
@@ -169,14 +190,14 @@ public class Numerical extends AppCompatActivity {
         });
 
 
-        String str[] = new String[130];
-        for (int i = 0; i < str.length; i++) {
-            str[i] = "" + (i + 1);
+        String Para_Max[] = new String[MAX_Para_Level];
+        for (int i = 0; i < Para_Max.length; i++) {
+            Para_Max[i] = "" + (i + 1);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                str);
+                Para_Max);
         spinnerStr.setAdapter(adapter);
         spinnerStr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -184,6 +205,8 @@ public class Numerical extends AppCompatActivity {
                 StrPos = position+1;
                 Log.d("T0814-A","Str:"+StrPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -192,14 +215,10 @@ public class Numerical extends AppCompatActivity {
             }
         });
 /******************************************************/
-        String agi[] = new String[130];
-        for (int i = 0; i < agi.length; i++) {
-            agi[i] = "" + (i + 1);
-        }
 
         ArrayAdapter<String> adapteragi = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                agi);
+                Para_Max);
         spinnerAgi.setAdapter(adapteragi);
         spinnerAgi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -207,6 +226,8 @@ public class Numerical extends AppCompatActivity {
                 AgiPos = position+1;
                 Log.d("T0814-A","Agi:"+AgiPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -215,14 +236,10 @@ public class Numerical extends AppCompatActivity {
             }
         });
 /******************************************************/
-        String vit[] = new String[130];
-        for (int i = 0; i < vit.length; i++) {
-            vit[i] = "" + (i + 1);
-        }
 
         ArrayAdapter<String> adapteragivit = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                vit);
+                Para_Max);
         spinnerVit.setAdapter(adapteragivit);
         spinnerVit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -230,6 +247,8 @@ public class Numerical extends AppCompatActivity {
                 VitPos = position+1;
                 Log.d("T0814-A","Vit:"+VitPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -238,14 +257,10 @@ public class Numerical extends AppCompatActivity {
             }
         });
 /******************************************************/
-        String In[] = new String[130];
-        for (int i = 0; i < agi.length; i++) {
-            In[i] = "" + (i + 1);
-        }
 
         ArrayAdapter<String> adapteragiin = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                In);
+                Para_Max);
         spinnerIn.setAdapter(adapteragiin);
         spinnerIn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -253,6 +268,8 @@ public class Numerical extends AppCompatActivity {
                 InPos = position+1;
                 Log.d("T0814-A","In:"+InPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -262,14 +279,10 @@ public class Numerical extends AppCompatActivity {
         });
 
 /******************************************************/
-        String dex[] = new String[130];
-        for (int i = 0; i < agi.length; i++) {
-            dex[i] = "" + (i + 1);
-        }
 
         ArrayAdapter<String> adapteragidex = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                dex);
+                Para_Max);
         spinnerDex.setAdapter(adapteragidex);
         spinnerDex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -277,6 +290,8 @@ public class Numerical extends AppCompatActivity {
                 DexPos = position+1;
                 Log.d("T0814-A","Dex:"+DexPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -286,14 +301,10 @@ public class Numerical extends AppCompatActivity {
         });
 
 /******************************************************/
-        String luk[] = new String[130];
-        for (int i = 0; i < agi.length; i++) {
-            luk[i] = "" + (i + 1);
-        }
 
         ArrayAdapter<String> adapteragiluk = new ArrayAdapter<String>(Numerical.this,
                 android.R.layout.simple_spinner_dropdown_item,
-                luk);
+                Para_Max);
         spinnerLuk.setAdapter(adapteragiluk);
         spinnerLuk.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -301,6 +312,8 @@ public class Numerical extends AppCompatActivity {
                 LukPos = position+1;
                 Log.d("T0814-A","Luk:"+LukPos);
                 ParaValue();
+                AttSpeed();
+                StateShow();
             }
 
             @Override
@@ -418,8 +431,8 @@ public class Numerical extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         ResetPara();//reset
-
-        Log.d("T0814","LV:"+LV);
+        ParaValue();
+        StateShow();
 
         //取得職業資料
         ROASlist list = new ROASlist(Numerical.this);
@@ -441,7 +454,7 @@ public class Numerical extends AppCompatActivity {
             str = new String[sid.size()];   //決定 顯示數量
             para1 = new float[sid.size()];
             HandUsed = new int[sid.size()];
-            MorPpint=Integer.parseInt(list.MorPT);
+            MorPoint=Integer.parseInt(list.MorPT);
             //Log.d("T0814-point",list.MorPT);
             //shd=Float.parseFloat(list.Shield);
             final float listShd = Float.parseFloat(list.Shield);
@@ -452,13 +465,16 @@ public class Numerical extends AppCompatActivity {
                 HandUsed[i] = sid.get(i).HandUsed;
                 Log.d("T0809-E1", str[i] + ":" + para1[i] + ":" + HandUsed[i]);
             }
-            final Spinner sp1 = (Spinner) findViewById(R.id.spinner);
+            sp = (Spinner) findViewById(R.id.spinner);
             ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this, android.R.layout.simple_list_item_1, str);
-            sp1.setAdapter(adpt);
+            sp.setAdapter(adpt);
 
-            sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    ParaValue();
+                    StateShow();
+                    checkShowList=true;
                     CheckBox cb = (CheckBox) findViewById(R.id.checkBox);
                     cb.setChecked(false);
                     Spinner sp1 = (Spinner) findViewById(R.id.spinner1);
@@ -493,7 +509,7 @@ public class Numerical extends AppCompatActivity {
                         }
                     });
 
-
+                    //第一類攻速
                     sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -501,14 +517,14 @@ public class Numerical extends AppCompatActivity {
                             switch (position) {
                                 case 1:
                                 case 2:
-                                    type1 = 1.1f;
+                                    type1 = 10f;
                                     break;
                                 case 3:
-                                    type1 = 1.15f;
+                                    type1 = 15f;
                                     break;
                                 case 4:
                                 case 5:
-                                    type1 = 1.2f;
+                                    type1 = 20f;
                                     break;
                             }
                             AttSpeed();
@@ -525,7 +541,7 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked)
-                                type2_1 = 0.1f;
+                                type2_1 = 10f;
                             else
                                 type2_1 = 0;
 
@@ -538,11 +554,44 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked)
-                                type2_2 = 0.25f;
+                                type2_2 = 25f;
 
                             else
                                 type2_2 = 0;
 
+                            AttSpeed();
+                        }
+                    });
+                    edType2_3.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                        }
+                    });
+
+                    edType3.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
                             AttSpeed();
                         }
                     });
@@ -561,19 +610,71 @@ public class Numerical extends AppCompatActivity {
     //攻速計算
     public void AttSpeed()
     {
-        //float sumW;
-        String sumW;
-        sumW="Shd:"+shd+",Type1:"+type1+",Type2:"+(1+type2_1+type2_2)+",WAsp:"+WAsp;
-        Log.d("T0814-Attspd",sumW);
-    }
 
+
+        if(edType2_3.getText().toString().trim().equals(""))
+        {
+            type2_3 = 0;
+        }
+        else
+        {
+            type2_3 = Integer.parseInt(edType2_3.getText().toString());
+        }
+
+        if(edType3.getText().toString().trim().equals(""))
+        {
+            type3 = 0;
+        }
+        else
+        {
+            type3 = Integer.parseInt(edType3.getText().toString());
+        }
+
+
+        double basic_aspd=WAsp;//基礎攻速
+        double potion1=type1;//攻速第一類(取最高)
+        double potion2=type2_1+type2_2+type2_3;//攻速第二類(可累加)
+        double potion3=type3;//攻速第三類(直接增加)
+        float bs_aspd2;
+        final float baseA=144;
+
+        if(basic_aspd<baseA)
+        {
+            bs_aspd2 = 1;
+        }
+        else
+        {
+            bs_aspd2 = (float) (1 - ((basic_aspd - baseA) / 50));
+        }
+
+        double aspd1=basic_aspd+Math.pow(((AgiPos*1120/111)+(DexPos*11/60)),0.5f)*bs_aspd2;//攻速1
+        double aspd2=200-(200-aspd1)*(1-potion1/100);//攻速2
+        double aspd3=200-(195-aspd2)*(1-potion2/100)+potion3-shd;//最終ASPD
+        Log.d("T0814-Attspd","1:"+aspd1);
+        Log.d("T0814-Attspd","2:"+aspd2);
+        Log.d("T0814-Attspd","3:"+aspd3);
+        DecimalFormat df = new DecimalFormat("#.##");
+        String totalASPD=df.format(aspd3);
+        if(checkShowList)
+        tvASPD.setText(totalASPD+"   ");
+    }
+    public void StateShow()
+    {
+        double atk1=StrPos+LukPos*0.3+LV/4+DexPos/5;//前ATK
+        double matk1=(LV/4)+(InPos*1.5)+(DexPos/5)+(LukPos*0.3);//前MATK(素質MATK)
+
+        borATK.setText(atk1+"   ");
+
+        double hp_coefficient=0.7;//HP係數
+        double hp_magnification=5;//HP倍率
+    }
 
     //技能點計算
     public void ParaValue()
     {
         int sum=0;
         int point;
-        point=SkillPoint(LV)+MorPpint;
+        point=SkillPoint(LV)+MorPoint;
 
         sum=point-UsePoint(StrPos)-UsePoint(AgiPos)-UsePoint(VitPos)-
                 UsePoint(InPos)-UsePoint(DexPos)-UsePoint(LukPos);
@@ -593,6 +694,8 @@ public class Numerical extends AppCompatActivity {
         type1=1;
         type2_1=0;
         type2_2=0;
+        type2_3=0;
+        type3=0;
     }
     public void ResetLV()
     {
@@ -610,7 +713,7 @@ public class Numerical extends AppCompatActivity {
         InPos=1;
         DexPos=1;
         LukPos=1;
-        MorPpint=0;
+        MorPoint=0;
     }
     //
     public int SkillPoint (int LV)
