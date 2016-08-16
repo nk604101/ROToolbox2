@@ -53,6 +53,7 @@ public class Numerical extends AppCompatActivity {
     int InPos;
     int DexPos;
     int LukPos;
+    int totalSTR,totalAGI,totalVIT,totalINT,totalDEX,totalLUK;
     int LV;
     int MorPoint;
     TextView tv16;
@@ -206,7 +207,7 @@ public class Numerical extends AppCompatActivity {
                 LV=position+1;
                 ParaValue();
                 StateShow();
-                AttSpeed();
+                //AttSpeed();
             }
 
             @Override
@@ -232,7 +233,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","Str:"+StrPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -253,7 +254,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","Agi:"+AgiPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -274,7 +275,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","Vit:"+VitPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -295,7 +296,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","In:"+InPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -317,7 +318,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","Dex:"+DexPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -339,7 +340,7 @@ public class Numerical extends AppCompatActivity {
                 Log.d("T0814-A","Luk:"+LukPos);
                 ParaValue();
                 AttSpeed();
-                StateShow();
+                //StateShow();
             }
 
             @Override
@@ -359,95 +360,28 @@ public class Numerical extends AppCompatActivity {
 
 
     }
-    protected void onCreate1(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_numerical);
 
-        File f = getCacheDir();
-        Log.d("FILE", f.toString());
-        String fName = "mydata.txt";
-        FileOutputStream fOut = null;
-        try {
-
-            fOut = openFileOutput(fName, MODE_PRIVATE);
-            OutputStreamWriter osw = new OutputStreamWriter(fOut);
-            osw.write("She sell sea shells on the sea shore .");
-            osw.close();
-
-
-            File readFile = new File(getFilesDir() + File.separator + fName);
-            char[] buffer = new char[1];
-            FileReader fr = null;
-            StringBuilder sb = new StringBuilder();
-
-            fr = new FileReader(readFile);
-            while (fr.read(buffer) != -1) {
-                sb.append(new String(buffer));
-            }
-            fr.close();
-            Log.d("FILE", sb.toString());
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
+    //存檔
     public void click1(View v) {
 
-        JSONArray array = new JSONArray();
-        JSONObject obj;
-        try {
-            obj = new JSONObject();
-            obj.put("name", "vit[i]");
-            obj.put("addr", "Taipei");
-            obj.put("tel", "123456");
-            array.put(obj);
-            obj = new JSONObject();
-            obj.put("name", "Mary");
-            obj.put("addr", "Tainan");
-            obj.put("tel", "654321");
-            array.put(obj);
 
-            Log.d("JSON", array.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
     }
 
+    //讀檔
     public void click2(View v) {
 
-        ArrayList<Student> mylist = new ArrayList();
-
-        //EditText ed = (EditText) findViewById(R.id.editText);
-       //EditText ed2 = (EditText) findViewById(R.id.editText2);
-        //EditText ed3 = (EditText) findViewById(R.id.editText3);
-
-       // String n = ed.getText().toString();
-        //String a = ed2.getText().toString();
-        //String p = ed3.getText().toString();
 
 
-        Student s1 = new Student(12, 22, 15, "[i]", "[i]", "luk[i]", "[i]", "[i]", "[i]");
-
-        mylist.add(s1);
-
-        Gson gson = new Gson();
-
-        String str = gson.toJson(mylist, new TypeToken<ArrayList<Student>>() {
-        }.getType());
-        Log.d("JSON", str);
     }
 
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        ID= item.getTitle().toString();
 
         ResetPara();//reset
         ParaValue();
@@ -455,8 +389,10 @@ public class Numerical extends AppCompatActivity {
 
         //取得職業資料
         ROASlist list = new ROASlist(Numerical.this);
-        ID= item.getTitle().toString();
 
+        ParameterShow(ID,item.getGroupId(),list);
+
+        /*
         //將所選的職業名稱丟入取出數值表
         list=list.SeacrhList(ID);
         //Log.d("T0809-list", list.ID + ",空手:" + list.Empty);
@@ -488,6 +424,8 @@ public class Numerical extends AppCompatActivity {
             ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this, android.R.layout.simple_list_item_1, str);
             sp.setAdapter(adpt);
 
+            //武器選擇
+            //===============================================================================
             sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -514,7 +452,7 @@ public class Numerical extends AppCompatActivity {
                     WAsp = para1[i];
                     AttSpeed();
 
-
+                    //===============================================================================
                     cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -529,8 +467,8 @@ public class Numerical extends AppCompatActivity {
                             }
                         }
                     });
-
-                    /******************************************************/
+                    //第一類攻速顯示表
+                    //===============================================================================
 
                     String[] speed1 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%", "毒藥瓶20%(十字刺客/十字斬首者限定)"};
                     String[] speed2 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%"};
@@ -545,6 +483,7 @@ public class Numerical extends AppCompatActivity {
                                 speed2);
                     sp1.setAdapter(adapter1);
                     //第一類攻速
+                    //===============================================================================
                     sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -577,7 +516,7 @@ public class Numerical extends AppCompatActivity {
                         }
                     });
 
-
+                    //===============================================================================
                     cb3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -590,7 +529,7 @@ public class Numerical extends AppCompatActivity {
                         }
                     });
 
-
+                    //===============================================================================
                     cb4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -603,6 +542,7 @@ public class Numerical extends AppCompatActivity {
                             AttSpeed();
                         }
                     });
+                    //===============================================================================
                     edType2_3.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -619,7 +559,7 @@ public class Numerical extends AppCompatActivity {
                             AttSpeed();
                         }
                     });
-
+                    //===============================================================================
                     edType3.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -636,6 +576,7 @@ public class Numerical extends AppCompatActivity {
                             AttSpeed();
                         }
                     });
+                    //===============================================================================
                     edSTR.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -649,9 +590,10 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
+                    //===============================================================================
                     edAGI.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -665,9 +607,10 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
+                    //===============================================================================
                     edVIT.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -681,9 +624,10 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
+                    //===============================================================================
                     edINT.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -697,9 +641,10 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
+                    //===============================================================================
                     edDEX.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -713,9 +658,10 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
+                    //===============================================================================
                     edLUK.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -729,7 +675,7 @@ public class Numerical extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             AttSpeed();
-                            StateShow();
+                            //StateShow();
                         }
                     });
 
@@ -740,14 +686,14 @@ public class Numerical extends AppCompatActivity {
 
                 }
             });
-        }
+        }//*///test
         return super.onOptionsItemSelected(item);
     }
 
     //攻速計算
     public void AttSpeed()
     {
-
+        StateShow();
 
         if(edType2_3.getText().toString().trim().equals(""))
         {
@@ -784,7 +730,7 @@ public class Numerical extends AppCompatActivity {
             bs_aspd2 = (float) (1 - ((basic_aspd - baseA) / 50));
         }
 
-        double aspd1=basic_aspd+Math.pow(((AgiPos*1120/111f)+(DexPos*11/60)),0.5f)*bs_aspd2;//攻速1
+        double aspd1=basic_aspd+Math.pow(((totalAGI*1120/111f)+(totalDEX*11/60)),0.5f)*bs_aspd2;//攻速1
         double aspd2=200-(200-aspd1)*(1-potion1/100f);//攻速2
         double aspd3=195-(195-aspd2)*(1-potion2/100f)+potion3-shd;//最終ASPD
         Log.d("T0814-Attspd","1:"+aspd1);
@@ -797,7 +743,7 @@ public class Numerical extends AppCompatActivity {
     }
     public void StateShow()
     {
-        int totalSTR,totalAGI,totalVIT,totalINT,totalDEX,totalLUK;
+
         if(edSTR.getText().toString().trim().equals(""))
             totalSTR=StrPos+0;
         else
@@ -960,5 +906,305 @@ public class Numerical extends AppCompatActivity {
             }
         }
         return pointUsed;
+    }
+
+    public void ParameterShow(final String ID,int GID,ROASlist list)
+    {
+
+        //將所選的職業名稱丟入取出數值表
+        list=list.SeacrhList(ID);
+        //Log.d("T0809-list", list.ID + ",空手:" + list.Empty);
+        if(GID!=0) {
+            //秀出目前職業
+            TextView tv31 = (TextView) findViewById(R.id.textView31);
+            //
+            //if(item.getGroupId()!=0)
+            tv31.setText(ID);
+            //tv.setText(ID);
+
+            //將可裝備武器資料 放到 Spinner
+            ArrayList<ShowIDListArray> sid = list.ShowList(list);
+            str = new String[sid.size()];   //決定 顯示數量
+            para1 = new float[sid.size()];
+            HandUsed = new int[sid.size()];
+            MorPoint=Integer.parseInt(list.MorPT);
+            //Log.d("T0814-point",list.MorPT);
+            //shd=Float.parseFloat(list.Shield);
+            final float listShd = Float.parseFloat(list.Shield);
+            //將資料放置同一 position
+            for (int i = 0; i < sid.size(); i++) {
+                str[i] = sid.get(i).Weapon;
+                para1[i] = Float.parseFloat(sid.get(i).speed);
+                HandUsed[i] = sid.get(i).HandUsed;
+                Log.d("T0809-E1", str[i] + ":" + para1[i] + ":" + HandUsed[i]);
+            }
+            sp = (Spinner) findViewById(R.id.spinner);
+            ArrayAdapter<String> adpt = new ArrayAdapter<String>(Numerical.this, android.R.layout.simple_list_item_1, str);
+            sp.setAdapter(adpt);
+
+            //武器選擇
+            //===============================================================================
+            sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    checkShowList = true;   //設定顯示在列表的時機
+
+                    ParaValue();
+                    StateShow();
+                    CheckBox cb = (CheckBox) findViewById(R.id.checkBox);
+                    cb.setChecked(false);
+                    Spinner sp1 = (Spinner) findViewById(R.id.spinner1);
+                    sp1.setSelection(0);
+                    CheckBox cb3 = (CheckBox) findViewById(R.id.checkBox3);
+                    CheckBox cb4 = (CheckBox) findViewById(R.id.checkBox4);
+                    cb3.setChecked(false);
+                    cb4.setChecked(false);
+
+                    if (HandUsed[i] == 2) {
+                        cb.setEnabled(false);
+                        cb.setChecked(false);
+                    } else {
+                        cb.setEnabled(true);
+                    }
+                    WAsp = para1[i];
+                    AttSpeed();
+
+                    //===============================================================================
+                    cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            Log.d("T0813-shd", "" + shd);
+                            Log.d("T0813-shd", "" + isChecked);
+                            if (isChecked) {
+                                shd = listShd;
+                                AttSpeed();
+                            } else {
+                                shd = 0;
+                                AttSpeed();
+                            }
+                        }
+                    });
+                    //第一類攻速顯示表
+                    //===============================================================================
+
+                    String[] speed1 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%", "毒藥瓶20%(十字刺客/十字斬首者限定)"};
+                    String[] speed2 = {"無效果", "瓜拿那糖果10%", "集中藥水10%", "覺醒藥水15%", "菠色藥藥水20%"};
+                    ArrayAdapter<String> adapter1;
+                    if(ID.equals("十字刺客")||ID.equals("十字斬首者"))
+                    adapter1 = new ArrayAdapter<String>(Numerical.this,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            speed1);
+                    else
+                        adapter1 = new ArrayAdapter<String>(Numerical.this,
+                                android.R.layout.simple_spinner_dropdown_item,
+                                speed2);
+                    sp1.setAdapter(adapter1);
+                    //第一類攻速
+                    //===============================================================================
+                    sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            Log.d("T0813-buffS", "" + position);
+
+                                    switch (position)
+                                    {
+                                        case 0:
+                                            type1 = 0;
+                                            break;
+                                        case 1:
+                                        case 2:
+                                            type1 = 10f;
+                                            break;
+                                        case 3:
+                                            type1 = 15f;
+                                            break;
+                                        case 4:
+                                        case 5:
+                                            type1 = 20f;
+                                            break;
+                                    }
+                            AttSpeed();
+                        }
+
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                    //===============================================================================
+                    cb3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
+                                type2_1 = 10f;
+                            else
+                                type2_1 = 0;
+
+                            AttSpeed();
+                        }
+                    });
+
+                    //===============================================================================
+                    cb4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
+                                type2_2 = 25f;
+
+                            else
+                                type2_2 = 0;
+
+                            AttSpeed();
+                        }
+                    });
+                    //===============================================================================
+                    edType2_3.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                        }
+                    });
+                    //===============================================================================
+                    edType3.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                        }
+                    });
+                    //===============================================================================
+                    edSTR.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                        }
+                    });
+                    //===============================================================================
+                    edAGI.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                            Log.d("T0816","AGI");
+                        }
+                    });
+                    //===============================================================================
+                    edVIT.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                        }
+                    });
+                    //===============================================================================
+                    edINT.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                        }
+                    });
+                    //===============================================================================
+                    edDEX.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                        }
+                    });
+                    //===============================================================================
+                    edLUK.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            AttSpeed();
+                            //StateShow();
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
     }
 }
